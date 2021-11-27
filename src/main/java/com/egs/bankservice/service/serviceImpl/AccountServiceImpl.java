@@ -13,10 +13,12 @@ import com.egs.bankservice.web.dto.BankRestResponse;
 import com.egs.bankservice.web.error.ErrorConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
 @Service
+@Transactional
 public class AccountServiceImpl implements AccountService {
 
     public static final String VERIFICATION_KEY = "VerificationKey";

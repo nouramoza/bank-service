@@ -2,22 +2,22 @@ package com.egs.bankservice.web.dto;
 
 public class UserDto {
 
-    public String userName;
-    public String password;
+    public String Username;
+    public String Password;
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return Username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        Username = username;
     }
 
     public String getPassword() {
-        return password;
+        return Password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        Password = password;
     }
 }

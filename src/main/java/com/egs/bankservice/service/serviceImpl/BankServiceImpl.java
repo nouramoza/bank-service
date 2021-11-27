@@ -10,7 +10,6 @@ import com.egs.bankservice.web.error.ErrorConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 /**
@@ -23,9 +22,6 @@ public class BankServiceImpl implements BankService {
     public static final String VERIFICATION_KEY = "VerificationKey";
 
     @Autowired
-    private HttpSession httpSession;
-
-    @Autowired
     private CardRepository cardRepository;
 
     @Override
@@ -35,7 +31,6 @@ public class BankServiceImpl implements BankService {
             CardEntity cardEntity = cardRepository.findByCardNumber(cardDto.getCardNumber());
             if (cardEntity != null) {
                 if (cardEntity.getIsActive() && !cardEntity.getExpireDate().before(new Date())) {
-                    httpSession.setAttribute(VERIFICATION_KEY, cardDto);
                     restResponse = new BankRestResponse(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.ResponseMessage.CARD_ACCEPTED);
                 } else {
                     if (!cardEntity.getIsActive()) {
@@ -65,7 +60,6 @@ public class BankServiceImpl implements BankService {
 //                if (cardEntity != null) {
                     if (cardEntity.getPin().equals(cardDto.getPin())) {
 
-                        httpSession.setAttribute(VERIFICATION_KEY, cardDto);
                         restResponse = new BankRestResponse(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.ResponseMessage.CARD_ACCEPTED);
                     } else {
                         cardEntity.setIncorrectPinCount(cardEntity.getIncorrectPinCount() + 1);
