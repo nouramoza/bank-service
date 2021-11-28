@@ -21,13 +21,11 @@ public class BasicInfoController {
     @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
     public BankRestResponse addAccount(@RequestBody AccountDto accountDto) {
         return cardService.addAccount(accountDto);
-
     }
 
     @RequestMapping(value = "/addCard", method = RequestMethod.POST)
     public BankRestResponse addCard(@RequestBody CardDto cardDto) {
         return cardService.addCard(cardDto);
-
     }
 
 }

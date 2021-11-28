@@ -25,11 +25,4 @@ public class AccountController {
         return accountService.requestManagement(accountRequestDto);
 
     }
-
-//    @RequestMapping(value = "/getReceipt", method = RequestMethod.POST)
-//    public BankRestResponse getReceipt(@RequestBody AccountRequestDto accountRequestDto) {
-//        return accountService.getReceipt(accountRequestDto);
-//
-//    }
-
 }

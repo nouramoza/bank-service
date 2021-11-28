@@ -14,7 +14,7 @@ public final class ConstantsUtil {
         public static final String YOUR_BALANCE = "Your Balance is: ";
         public static final String SUCCESS_DEPOSIT = "Deposit Done Successful. Your new Balance is: ";
         public static final String SUCCESS_WITHDRAW = "Withdraw Done Successful. Your new Balance is: ";
-        public static final String SUCCESS_RECEIPT = "Your Receipt is ready:\n ";
+        public static final String SUCCESS_RECEIPT = "Your Receipt is ready: ";
     }
 
     public static class ResponseMessage {

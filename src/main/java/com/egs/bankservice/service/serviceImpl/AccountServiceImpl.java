@@ -1,23 +1,19 @@
 package com.egs.bankservice.service.serviceImpl;
 
-//import com.egs.bankservice.entity.AccountEntity;
-//import com.egs.bankservice.entity.CardEntity;
-//import com.egs.bankservice.entity.TransactionLogEntity;
+import com.egs.bankservice.entity.AccountEntity;
+import com.egs.bankservice.entity.CardEntity;
+import com.egs.bankservice.entity.TransactionLogEntity;
 import com.egs.bankservice.enums.RequestTypeEnum;
-//import com.egs.bankservice.repository.AccountRepository;
-//import com.egs.bankservice.repository.CardRepository;
-//import com.egs.bankservice.repository.TransactionLogRepository;
+import com.egs.bankservice.repository.AccountRepository;
+import com.egs.bankservice.repository.CardRepository;
+import com.egs.bankservice.repository.TransactionLogRepository;
 import com.egs.bankservice.service.AccountService;
 import com.egs.bankservice.util.ConstantsUtil;
-import com.egs.bankservice.web.dto.AccountDto;
 import com.egs.bankservice.web.dto.AccountRequestDto;
 import com.egs.bankservice.web.dto.BankRestResponse;
-//import com.egs.bankservice.web.dto.TransactionLogDto;
-//import com.egs.bankservice.web.error.ErrorConstants;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.egs.bankservice.web.error.ErrorConstants;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,108 +23,101 @@ public class AccountServiceImpl implements AccountService {
 
     public static final String VERIFICATION_KEY = "VerificationKey";
 
-    @Autowired
-    private HttpSession httpSession;
+    private TransactionLogRepository transactionLogRepository;
+    private AccountRepository accountRepository;
+    private CardRepository cardRepository;
 
-//    private TransactionLogRepository transactionLogRepository;
-//    private AccountRepository accountRepository;
-//    private CardRepository cardRepository;
-
-//    public AccountServiceImpl(AccountRepository accountRepository, CardRepository cardRepository, TransactionLogRepository transactionLogRepository) {
-//        this.transactionLogRepository = transactionLogRepository;
-//        this.accountRepository = accountRepository;
-//        this.cardRepository = cardRepository;
-//    }
+    public AccountServiceImpl(AccountRepository accountRepository, CardRepository cardRepository, TransactionLogRepository transactionLogRepository) {
+        this.transactionLogRepository = transactionLogRepository;
+        this.accountRepository = accountRepository;
+        this.cardRepository = cardRepository;
+    }
 
     @Override
     public BankRestResponse requestManagement(AccountRequestDto accountRequestDto) {
         BankRestResponse restResponse = null;
-//        CardEntity cardEntity = cardRepository.findByCardNumber(accountRequestDto.getCardNumber());
-//        AccountEntity accountEntity = cardEntity.getAccountEntity();
-//        TransactionLogEntity transactionLogEntity = new TransactionLogEntity();
-//        transactionLogEntity.setRequestDate(new Date());
-//        transactionLogEntity.setAccountEntity(accountEntity);
-//        transactionLogEntity.setRequestTypeEnum(accountRequestDto.getRequestType());
+        CardEntity cardEntity = cardRepository.findByCardNumber(accountRequestDto.getCardNumber());
+        AccountEntity accountEntity = cardEntity.getAccountEntity();
+        TransactionLogEntity transactionLogEntity = new TransactionLogEntity();
+        transactionLogEntity.setRequestDate(new Date());
+        transactionLogEntity.setAccountEntity(accountEntity);
+        transactionLogEntity.setRequestTypeEnum(accountRequestDto.getRequestType());
 
         try {
-            AccountDto accountDto = null;
             if (accountRequestDto.getRequestType().equals(RequestTypeEnum.CHECK_BALANCE)) {
-//                accountDto = checkBalance(accountRequestDto, accountEntity);
-                restResponse = new BankRestResponse(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.CommonMessage.YOUR_BALANCE + accountDto.getBalance());
+                restResponse = checkBalance(accountRequestDto, accountEntity);
+                transactionLogEntity.setDescription(accountRequestDto.getRequestType().name());
             } else if (accountRequestDto.getRequestType().equals(RequestTypeEnum.DEPOSIT)) {
-//                accountDto = updateBalance(accountRequestDto, accountEntity);
-                restResponse = new BankRestResponse(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.CommonMessage.SUCCESS_DEPOSIT + accountDto.getBalance());
+                restResponse = updateBalance(accountRequestDto, accountEntity);
+                transactionLogEntity.setDescription(accountRequestDto.getRequestType().name().concat("-")
+                        .concat(accountRequestDto.getDescription() != null ? accountRequestDto.getDescription() : accountRequestDto.getAmount().toString()));
 
             } else if (accountRequestDto.getRequestType().equals(RequestTypeEnum.WITHDRAW)) {
                 accountRequestDto.setAmount(-accountRequestDto.getAmount());
-//                accountDto = updateBalance(accountRequestDto, accountEntity);
-                restResponse = new BankRestResponse(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.CommonMessage.SUCCESS_WITHDRAW + accountDto.getBalance());
+                restResponse = updateBalance(accountRequestDto, accountEntity);
+                transactionLogEntity.setDescription(accountRequestDto.getRequestType().name().concat("-")
+                        .concat(accountRequestDto.getDescription() != null ? accountRequestDto.getDescription() : accountRequestDto.getAmount().toString()));
             } else if (accountRequestDto.getRequestType().equals(RequestTypeEnum.GET_RECEIPT)) {
-//                accountDto = getReceipt(accountRequestDto, accountEntity);
-                restResponse = new BankRestResponse(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.CommonMessage.SUCCESS_RECEIPT + accountDto.getTransactionList());
+                restResponse = getReceipt(accountRequestDto);
+                transactionLogEntity.setDescription(accountRequestDto.getRequestType().name());
             }
         } catch (Exception e) {
-            httpSession.setAttribute(VERIFICATION_KEY, ConstantsUtil.SessionKey.ERROR);
-            restResponse = new BankRestResponse(BankRestResponse.STATUS.FAILURE, e.toString());
+            restResponse = new BankRestResponse(BankRestResponse.STATUS.FAILURE, e.getMessage().toString());
         }
 
-
-//        transactionLogEntity.setNewBalance(accountEntity.getBalance());
-//        transactionLogEntity.setResponse(restResponse.getMessage());
-//        transactionLogEntity.setStatus(restResponse.getStatus());
-//        transactionLogRepository.saveAndFlush(transactionLogEntity);
+        transactionLogEntity.setNewBalance(accountEntity.getBalance());
+        transactionLogEntity.setResponse(restResponse.getMessage().substring(0,255));
+        transactionLogEntity.setStatus(restResponse.getStatus());
+        transactionLogRepository.saveAndFlush(transactionLogEntity);
         return restResponse;
     }
 
-//    private AccountDto checkBalance(AccountRequestDto accountRequestDto, AccountEntity accountEntity) {
-//
-//        AccountDto accountDto = new AccountDto();
-//        accountDto.setAccountNumber(accountEntity.getAccountNumber());
-//        accountDto.setBalance(accountEntity.getBalance());
-//        return accountDto;
-//    }
-//
-//    private AccountDto updateBalance(AccountRequestDto accountRequestDto, AccountEntity accountEntity) throws Exception {
-//        AccountDto accountDto = new AccountDto();
-//        synchronized (accountEntity) {
-//            if (accountEntity.getBalance() + accountRequestDto.getAmount() >= 0) {
-//                accountEntity.setBalance(accountEntity.getBalance() + accountRequestDto.getAmount());
-//                accountRepository.saveAndFlush(accountEntity);
-//                accountDto.setAccountNumber(accountEntity.getAccountNumber());
-//                accountDto.setBalance(accountEntity.getBalance());
-//            } else {
-//                throw new Exception(ErrorConstants.AccountMessage.NOT_ENOUGH_BALANCE_MSG);
-//            }
-//        }
-//        return accountDto;
-//    }
+    private BankRestResponse checkBalance(AccountRequestDto accountRequestDto, AccountEntity accountEntity) {
+        return new BankRestResponse(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.CommonMessage.YOUR_BALANCE + accountEntity.getBalance());
+    }
 
-//    public BankRestResponse getReceipt(AccountRequestDto accountRequestDto) {
-//        BankRestResponse restResponse = null;
+    private BankRestResponse updateBalance(AccountRequestDto accountRequestDto, AccountEntity accountEntity) throws Exception {
+        BankRestResponse restResponse;
+        synchronized (accountEntity) {
+            if (accountEntity.getBalance() + accountRequestDto.getAmount() >= 0) {
+                accountEntity.setBalance(accountEntity.getBalance() + accountRequestDto.getAmount());
+                accountRepository.saveAndFlush(accountEntity);
+                restResponse = new BankRestResponse(BankRestResponse.STATUS.SUCCESS,
+                        (accountRequestDto.getAmount() > 0 ?
+                                ConstantsUtil.CommonMessage.SUCCESS_DEPOSIT :
+                                ConstantsUtil.CommonMessage.SUCCESS_WITHDRAW) +
+                                        accountEntity.getBalance());
 
-//        try {
-//            CardEntity cardEntity = cardRepository.findByCardNumber(accountRequestDto.getCardNumber());
-//            AccountEntity accountEntity = cardEntity.getAccountEntity();
-//            List<TransactionLogEntity> transactionLogList = transactionLogRepository.getReceipt(
-//                    accountEntity.getAccountNumber(), accountRequestDto.getFromDate(), accountRequestDto.getToDate());
-//
-//            List<TransactionLogDto> transactionLogDtoList = new ArrayList<>();
-//            for (TransactionLogEntity tl : transactionLogList) {
-//                TransactionLogDto transactionLogDto = new TransactionLogDto();
-//                transactionLogDto.setAccountNumber(tl.getAccountEntity().getAccountNumber());
-//                transactionLogDto.setRequestTypeEnum(tl.getRequestTypeEnum());
-//                transactionLogDto.setNewBalance(tl.getNewBalance());
-//                transactionLogDto.setResponse(tl.getResponse());
-//                transactionLogDto.setStatus(tl.getStatus());
-//                transactionLogDto.setRequestDate(tl.getRequestDate());
-//                transactionLogDto.setDescription(tl.getDescription());
-//                transactionLogDtoList.add(transactionLogDto);
-//            }
-//            restResponse = new BankRestResponse(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.CommonMessage.SUCCESS_WITHDRAW + transactionLogDtoList);
-//        } catch (Exception e) {
-//            httpSession.setAttribute(VERIFICATION_KEY, ConstantsUtil.SessionKey.ERROR);
-//            restResponse = new BankRestResponse(BankRestResponse.STATUS.FAILURE, e.toString());
-//        }
-//        return restResponse;
-//    }
+            } else {
+                restResponse = new BankRestResponse(BankRestResponse.STATUS.FAILURE, ErrorConstants.AccountMessage.NOT_ENOUGH_BALANCE_MSG);
+            }
+        }
+        return restResponse;
+    }
+
+    public BankRestResponse getReceipt(AccountRequestDto accountRequestDto) {
+        BankRestResponse restResponse = null;
+
+        try {
+            CardEntity cardEntity = cardRepository.findByCardNumber(accountRequestDto.getCardNumber());
+            AccountEntity accountEntity = cardEntity.getAccountEntity();
+            List<RequestTypeEnum> requestTypeEnums = new ArrayList<>();
+            requestTypeEnums.add(RequestTypeEnum.DEPOSIT);
+            requestTypeEnums.add(RequestTypeEnum.WITHDRAW);
+            List<TransactionLogEntity> transactionLogList = transactionLogRepository.getReceipt(
+                    accountEntity.getAccountNumber(), accountRequestDto.getFromDate(), accountRequestDto.getToDate(), requestTypeEnums);
+
+            final String[] logResult = {""};
+            transactionLogList.stream()
+                    .forEach(tl -> {
+                        logResult[0] = logResult[0].concat(tl.getRequestDate() + " - " + tl.getRequestTypeEnum() + " - " + tl.getNewBalance() +
+                                " - " + tl.getDescription() + "////");
+                    });
+            restResponse = new BankRestResponse(BankRestResponse.STATUS.SUCCESS,
+                    ConstantsUtil.CommonMessage.SUCCESS_RECEIPT.concat(logResult[0]));
+        } catch (Exception e) {
+            restResponse = new BankRestResponse(BankRestResponse.STATUS.FAILURE, e.getStackTrace().toString());
+        }
+        return restResponse;
+    }
 }
