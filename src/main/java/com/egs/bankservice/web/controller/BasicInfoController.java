@@ -18,7 +18,6 @@ public class BasicInfoController {
         this.cardService = cardService;
     }
 
-
     @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
     public BankRestResponse addAccount(@RequestBody AccountDto accountDto) {
         return cardService.addAccount(accountDto);

@@ -40,8 +40,11 @@ class BankserviceApplicationTests {
 
 	@Test
 	public void addAccount() throws Exception {
-		AccountDto accountDto = new AccountDto(
-				null, "1235430001", 1L, 1000L,  true);
+		AccountDto accountDto = new AccountDto();
+		accountDto.setAccountNumber("1235430001");
+		accountDto.setPersonId(1L);
+		accountDto.setBalance(1000L);
+		accountDto.setIsActive(true);
 		String accountStr = mapToJson(accountDto);
 		RequestBuilder req = post(ADD_ACCOUNT_URI)
 				.contentType(MediaType.APPLICATION_JSON) // for DTO
@@ -53,8 +56,11 @@ class BankserviceApplicationTests {
                 .andDo(print())
                 .andReturn();
 
-        accountDto = new AccountDto(
-				null, "1235430002", 2L, 0L,  true);
+        accountDto = new AccountDto();
+		accountDto.setAccountNumber("1235430002");
+		accountDto.setPersonId(2L);
+		accountDto.setBalance(0L);
+		accountDto.setIsActive(true);
 		accountStr = mapToJson(accountDto);
 		req = post(ADD_ACCOUNT_URI)
 				.contentType(MediaType.APPLICATION_JSON) // for DTO
@@ -65,8 +71,12 @@ class BankserviceApplicationTests {
 				.andDo(print())
 				.andReturn();
 
-        accountDto = new AccountDto(
-				null, "1235430003", 3L, 5000L,  true);
+        accountDto = new AccountDto();
+		accountDto.setAccountNumber("1235430003");
+		accountDto.setPersonId(3L);
+		accountDto.setBalance(5000L);
+		accountDto.setIsActive(true);
+
 		accountStr = mapToJson(accountDto);
 		req = post(ADD_ACCOUNT_URI)
 				.contentType(MediaType.APPLICATION_JSON) // for DTO

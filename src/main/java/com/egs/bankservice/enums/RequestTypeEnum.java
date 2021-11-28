@@ -3,7 +3,8 @@ package com.egs.bankservice.enums;
 public enum RequestTypeEnum {
     CHECK_BALANCE(1),
     DEPOSIT(2),
-    WITHDRAW(3);
+    WITHDRAW(3),
+    GET_RECEIPT(4);
 
     private int requestType;
 

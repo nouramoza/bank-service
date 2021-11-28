@@ -14,10 +14,12 @@ public final class ConstantsUtil {
         public static final String YOUR_BALANCE = "Your Balance is: ";
         public static final String SUCCESS_DEPOSIT = "Deposit Done Successful. Your new Balance is: ";
         public static final String SUCCESS_WITHDRAW = "Withdraw Done Successful. Your new Balance is: ";
+        public static final String SUCCESS_RECEIPT = "Your Receipt is ready:\n ";
     }
 
     public static class ResponseMessage {
         public static final String CARD_ACCEPTED = "Card Number Is Valid.";
+        public static final String PIN_ACCEPTED = "Pin Number Is Valid.";
         public static final String INACTIVE_CARD = "Card is Not Active";
         public static final String EXPIRED_CARD = "Card Is Expired";
         public static final String CARD_BLOCKED = "Card Blocked Due To Wrong PIN entered 3 Times.";

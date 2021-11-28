@@ -1,6 +1,6 @@
 package com.egs.bankservice.web.dto;
 
-import com.sun.istack.NotNull;
+import com.sun.istack.internal.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -24,5 +24,7 @@ public class AccountDto {
     private Long balance;
 
     private Boolean isActive;
+
+    private List<TransactionLogDto> transactionList;
 
 }

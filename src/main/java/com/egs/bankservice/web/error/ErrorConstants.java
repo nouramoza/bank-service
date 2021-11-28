@@ -31,6 +31,4 @@ public final class ErrorConstants {
         public static final String NOT_ENOUGH_BALANCE_KEY = "notEnoughBalance";
         public static final String NOT_ENOUGH_BALANCE_MSG = "Your Balance is Less Than the RequestedAmount";
     }
-
-
 }
