@@ -17,7 +17,7 @@ public final class ErrorConstants {
     public static class CardVerificationMessage {
         public static final String CARD_NOT_VALID_KEY = "cardNotValid";
         public static final String CARD_NOT_VALID_MSG = "This Card Number Is Not Valid.";
-        public static final String CARD_NOT_Found_MSG = "Card Number Is Not Found.";
+        public static final String CARD_NOT_FOUND_MSG = "Card Number Is Not Found.";
         public static final String CARD_IS_BLOCKED_MSG = "This Card Number Is Blocked.";
         public static final String WRONG_PIN_KEY = "wrongPin";
 
@@ -25,6 +25,9 @@ public final class ErrorConstants {
         public static final String WRONG_PIN_MSG = "Pin Number Is Wrong";
         public static final String CARD_EXPIRED_KEY = "cardExpired";
         public static final String CARD_EXPIRED_MSG = "Card Is Expired";
+
+        private CardVerificationMessage() {
+        }
     }
 
     public static class AccountMessage {
@@ -34,5 +37,8 @@ public final class ErrorConstants {
         public static final String ACCOUNT_IS_BLOCKED_MSG = "The Account is Blocked";
         public static final String NOT_ENOUGH_BALANCE_KEY = "notEnoughBalance";
         public static final String NOT_ENOUGH_BALANCE_MSG = "Your Balance is Less Than the RequestedAmount";
+
+        private AccountMessage() {
+        }
     }
 }

@@ -23,8 +23,6 @@ public class CardServiceImpl implements CardService {
     @Override
     public BankRestResponse addCard(CardDto cardDto) {
 
-        BankRestResponse restResponse;
-
         AccountEntity accountEntity = accountRepository.findByAccountNumber(cardDto.getAccountDto().getAccountNumber());
 
         CardEntity cardEntity = new CardEntity(null, accountEntity, cardDto.getCardNumber(),
@@ -37,8 +35,6 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public BankRestResponse addAccount(AccountDto accountDto) {
-        BankRestResponse restResponse;
-
         AccountEntity accountEntity = new AccountEntity(null, accountDto.getAccountNumber(),
                 accountDto.getPersonId(), accountDto.getBalance(), accountDto.getIsActive());
 

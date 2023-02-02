@@ -42,9 +42,9 @@ class BasicInfoResourceApiTests {
 
 	@Test
 	@Order(2)
-	public void addAccount() throws Exception {
+	void addAccount() throws Exception {
 		AccountDto accountDto = new AccountDto();
-		accountDto.setAccountNumber("1235430001");
+		accountDto.setAccountNumber(generateRandomAccountNumber());
 		accountDto.setPersonId(1L);
 		accountDto.setBalance(1000L);
 		accountDto.setIsActive(true);
@@ -55,7 +55,6 @@ class BasicInfoResourceApiTests {
 				.content(accountStr);
 
         MvcResult mvcResult = this.mockMvc.perform(req)
-//				.andExpect(content().string(containsString(outputExpectedMockBoard)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
@@ -63,7 +62,7 @@ class BasicInfoResourceApiTests {
 		Assertions.assertEquals(0, bankRestResponse.getStatus());
 
         accountDto = new AccountDto();
-		accountDto.setAccountNumber("1235430002");
+		accountDto.setAccountNumber(generateRandomAccountNumber());
 		accountDto.setPersonId(2L);
 		accountDto.setBalance(0L);
 		accountDto.setIsActive(true);
@@ -105,18 +104,17 @@ class BasicInfoResourceApiTests {
 
 	@Test
 	@Order(1)
-	public void addCard() throws Exception {
+	void addCard() throws Exception {
 		AccountDto accountDto = new AccountDto();
-		accountDto.setAccountNumber("754632562");
-		LocalDate date = LocalDate.of(2024, 1,1);
-		CardDto cardDto = new CardDto("6280231456658903", 123, generateDate("2024-01-01","yyyy-MM-dd"),
-				"1234", true, 0, accountDto);
-
-		String cardStr = mapToJson(cardDto);
-		RequestBuilder req = post(ADD_CARD_URI)
+		accountDto.setAccountNumber(generateRandomAccountNumber());
+		accountDto.setPersonId(1L);
+		accountDto.setBalance(1000L);
+		accountDto.setIsActive(true);
+		String accountStr = mapToJson(accountDto);
+		RequestBuilder req = post(ADD_ACCOUNT_URI)
 				.header("Authorization", MOCK_TOKEN)
 				.contentType(MediaType.APPLICATION_JSON) // for DTO
-				.content(cardStr);
+				.content(accountStr);
 
 		MvcResult mvcResult = this.mockMvc.perform(req)
 				.andExpect(status().isOk())
@@ -125,25 +123,22 @@ class BasicInfoResourceApiTests {
 		BankRestResponse bankRestResponse =new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), BankRestResponse.class);
 		Assertions.assertEquals(0, bankRestResponse.getStatus());
 
-		accountDto = new AccountDto();
-		accountDto.setAccountNumber("3473265");
-		cardDto = new CardDto("6280231451904304", 321, generateDate("2024-01-01","yyyy-MM-dd"),
-				"1234", false, 0, accountDto);
 
-		cardStr = mapToJson(cardDto);
-		req = post(ADD_CARD_URI)
+		LocalDate date = LocalDate.of(2024, 1,1);
+		CardDto cardDto = new CardDto(generateRandomCardNumber(), 123, generateDate("2024-01-01","yyyy-MM-dd"),
+				"1234", true, 0, accountDto);
+
+		String cardStr = mapToJson(cardDto);
+		RequestBuilder cardReq = post(ADD_CARD_URI)
 				.header("Authorization", MOCK_TOKEN)
 				.contentType(MediaType.APPLICATION_JSON) // for DTO
 				.content(cardStr);
 
-		mvcResult = this.mockMvc.perform(req)
+		MvcResult cardMvcResult = this.mockMvc.perform(cardReq)
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andReturn();
-
-		bankRestResponse =new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), BankRestResponse.class);
-		Assertions.assertEquals(0, bankRestResponse.getStatus());
+		BankRestResponse cardBankRestResponse =new ObjectMapper().readValue(cardMvcResult.getResponse().getContentAsString(), BankRestResponse.class);
+		Assertions.assertEquals(0, cardBankRestResponse.getStatus());
 	}
-
-
 }

@@ -41,7 +41,7 @@ class CardResourceApiTests {
     private static final URI VALIDATE_CARD_PIN_URI = URI.create("/card-service/validateCardPinNumber");
 
     @Test
-    public void validateCard_OK() throws Exception {
+    void validateCard_OK() throws Exception {
 
         AccountDto accountDto = AccountHelper.addAccount(mockMvc, generateRandomAccountNumber());
         CardDto cardDto = CardHelper.addValidCard(mockMvc, accountDto, generateRandomCardNumber());
@@ -60,7 +60,7 @@ class CardResourceApiTests {
     }
 
     @Test
-    public void validateCard_expired() throws Exception {
+    void validateCard_expired() throws Exception {
         AccountDto accountDto = AccountHelper.addAccount(mockMvc, generateRandomAccountNumber());
         CardDto cardDto = CardHelper.addExpiredCard(mockMvc, accountDto, generateRandomCardNumber());
 
@@ -80,7 +80,7 @@ class CardResourceApiTests {
     }
 
     @Test
-    public void validateCard_notActive() throws Exception {
+    void validateCard_notActive() throws Exception {
         AccountDto accountDto = AccountHelper.addAccount(mockMvc, generateRandomAccountNumber());
         CardDto cardDto = CardHelper.addInactiveCard(mockMvc, accountDto, generateRandomCardNumber());
 
@@ -100,7 +100,7 @@ class CardResourceApiTests {
     }
 
     @Test
-    public void validateCard_blocked() throws Exception {
+    void validateCard_blocked() throws Exception {
         AccountDto accountDto = AccountHelper.addAccount(mockMvc, generateRandomAccountNumber());
         CardDto cardDto = CardHelper.addBlockedCard(mockMvc, accountDto, generateRandomCardNumber());
 
@@ -120,7 +120,7 @@ class CardResourceApiTests {
     }
 
     @Test
-    public void validateCardPin_ok() throws Exception {
+    void validateCardPin_ok() throws Exception {
         AccountDto accountDto = AccountHelper.addAccount(mockMvc, generateRandomAccountNumber());
         CardDto cardDto = CardHelper.addValidCard(mockMvc, accountDto, generateRandomCardNumber());
 
@@ -140,7 +140,7 @@ class CardResourceApiTests {
     }
 
     @Test
-    public void validateCardPin_nok() throws Exception {
+    void validateCardPin_nok() throws Exception {
         AccountDto accountDto = AccountHelper.addAccount(mockMvc, generateRandomAccountNumber());
         CardDto cardDto = CardHelper.addValidCard(mockMvc, accountDto, generateRandomCardNumber());
         cardDto.setPin("6598");
@@ -160,7 +160,7 @@ class CardResourceApiTests {
     }
 
    @Test
-    public void blockCardBuExceedWrongPin() throws Exception {
+    void blockCardBuExceedWrongPin() throws Exception {
         AccountDto accountDto = AccountHelper.addAccount(mockMvc, generateRandomAccountNumber());
         CardDto cardDto = CardHelper.addValidCard(mockMvc, accountDto, generateRandomCardNumber());
         cardDto.setPin("6598");

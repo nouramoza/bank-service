@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -54,10 +55,10 @@ public class BankServiceImpl implements BankService {
                     }
                 }
             } else {
-                restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_NOT_Found_MSG);
+                restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_NOT_FOUND_MSG);
             }
         } catch (Exception e) {
-            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, e.getStackTrace().toString());
+            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, Arrays.toString(e.getStackTrace()));
         }
         return restResponse;
     }
@@ -94,7 +95,7 @@ public class BankServiceImpl implements BankService {
                 return restResponse;
             }
         } catch (Exception e) {
-            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, e.getStackTrace().toString());
+            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, Arrays.toString(e.getStackTrace()));
 
         }
         return restResponse;

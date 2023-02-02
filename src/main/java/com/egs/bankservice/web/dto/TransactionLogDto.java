@@ -4,14 +4,14 @@ import com.egs.bankservice.enums.RequestTypeEnum;
 import com.sun.istack.NotNull;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @AllArgsConstructor
-//@NoArgsConstructor
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class TransactionLogDto {
+public class TransactionLogDto implements Serializable {
     @NotNull
     private String accountNumber;
     @NotNull
@@ -24,5 +24,5 @@ public class TransactionLogDto {
     private int status;
     @NotNull
     private Date requestDate;
-    public String description;
+    private String description;
 }

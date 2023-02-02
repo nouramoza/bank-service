@@ -20,8 +20,7 @@ public class UserServiceImpl implements UserService {
         if (s.equals("atm")){
             List<GrantedAuthority> authority = new ArrayList<>();
             authority.add(new SimpleGrantedAuthority("admin"));
-            User user = new User("atm", new BCryptPasswordEncoder().encode("atm"), authority);
-            return user;
+            return new User("atm", new BCryptPasswordEncoder().encode("atm"), authority);
         } else {
             throw new UsernameNotFoundException("User with username = " + s + " Not Found");
         }

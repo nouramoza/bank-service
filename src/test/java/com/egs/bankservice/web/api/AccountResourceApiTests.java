@@ -11,7 +11,6 @@ import com.egs.bankservice.web.helper.AccountHelper;
 import com.egs.bankservice.web.helper.CardHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +24,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
 import java.net.URI;
-import java.util.Date;
 
 import static com.egs.bankservice.web.helper.CommonMethodHelper.*;
-import static com.egs.bankservice.web.helper.CommonMethodHelper.MOCK_TOKEN;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

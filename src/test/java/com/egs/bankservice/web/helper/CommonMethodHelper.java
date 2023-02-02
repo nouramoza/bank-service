@@ -1,7 +1,5 @@
 package com.egs.bankservice.web.helper;
 
-import com.egs.bankservice.util.ObjectMapperUtils;
-import com.egs.bankservice.web.dto.BankRestResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,7 +13,6 @@ public class CommonMethodHelper {
     public static String mapToJson(Object obj) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(obj);
-//        return ObjectMapperUtils.map(obj, String.class);
     }
 
     public static Date generateDate(String dateStr, String pattern) throws ParseException {

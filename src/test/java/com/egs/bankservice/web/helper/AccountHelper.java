@@ -2,16 +2,13 @@ package com.egs.bankservice.web.helper;
 
 import com.egs.bankservice.web.dto.AccountDto;
 import com.egs.bankservice.web.dto.BankRestResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 import static com.egs.bankservice.web.helper.CommonMethodHelper.MOCK_TOKEN;

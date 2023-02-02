@@ -5,10 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtil {
+
+    private DateUtil() {
+    }
+
     public static Date generateDate(String dateStr, String pattern) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat(pattern);
-        Date date = formatter.parse(dateStr);
-        return date;
+        return formatter.parse(dateStr);
     }
 
 }

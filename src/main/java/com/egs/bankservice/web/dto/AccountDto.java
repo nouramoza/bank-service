@@ -2,6 +2,7 @@ package com.egs.bankservice.web.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -10,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class AccountDto {
+public class AccountDto implements Serializable {
     private List<CardDto> cardDtoList;
 
     @NonNull

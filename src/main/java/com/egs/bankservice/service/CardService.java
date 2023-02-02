@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CardService {
-    public BankRestResponse addCard(CardDto cardDto);
+    BankRestResponse addCard(CardDto cardDto);
 
-    public BankRestResponse addAccount(AccountDto accountDto);
+    BankRestResponse addAccount(AccountDto accountDto);
 
 }
