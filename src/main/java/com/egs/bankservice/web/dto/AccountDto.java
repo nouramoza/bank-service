@@ -1,6 +1,5 @@
 package com.egs.bankservice.web.dto;
 
-import com.sun.istack.internal.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -17,10 +16,10 @@ public class AccountDto {
     @NonNull
     private String accountNumber;
 
-    @NotNull
+    @NonNull
     private Long personId;
 
-    @NotNull
+    @NonNull
     private Long balance;
 
     private Boolean isActive;

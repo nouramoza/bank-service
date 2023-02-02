@@ -24,4 +24,9 @@ public final class ConstantsUtil {
         public static final String EXPIRED_CARD = "Card Is Expired";
         public static final String CARD_BLOCKED = "Card Blocked Due To Wrong PIN entered 3 Times.";
     }
+
+    public static class CommonValues {
+        public static final int WRONG_PIN_COUNTS_TO_BLOCK = 3;
+
+    }
 }

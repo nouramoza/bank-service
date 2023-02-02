@@ -1,13 +1,13 @@
 package com.egs.bankservice.web.dto;
 
 import com.egs.bankservice.enums.RequestTypeEnum;
-import com.sun.istack.internal.NotNull;
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import java.util.Date;
 
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @RequiredArgsConstructor
 @Getter
 @Setter

@@ -19,15 +19,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//@Profile("dev")
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private static final Logger log = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
-
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
-
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,

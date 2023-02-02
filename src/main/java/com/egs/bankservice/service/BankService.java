@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface BankService {
 
-    public BankRestResponse getCardVerification(CardDto cardDto);
+    BankRestResponse<CardDto> getCardVerification(CardDto cardDto);
 
-    public BankRestResponse getCardPinVerification(CardDto cardDto);
+    BankRestResponse<CardDto> getCardPinVerification(CardDto cardDto);
 
 }
