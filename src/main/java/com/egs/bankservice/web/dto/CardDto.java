@@ -1,5 +1,6 @@
 package com.egs.bankservice.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.lang.NonNull;
@@ -13,6 +14,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CardDto implements Serializable {
     @NonNull
     @Setter

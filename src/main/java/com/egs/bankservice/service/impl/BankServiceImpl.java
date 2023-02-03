@@ -55,10 +55,10 @@ public class BankServiceImpl implements BankService {
                     }
                 }
             } else {
-                restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_NOT_FOUND_MSG);
+                restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_NOT_FOUND_MSG, cardDto);
             }
         } catch (Exception e) {
-            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, Arrays.toString(e.getStackTrace()));
+            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, Arrays.toString(e.getStackTrace()), cardDto);
         }
         return restResponse;
     }

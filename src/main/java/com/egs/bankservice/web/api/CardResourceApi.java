@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class CardResourceApi {
 
     Logger log = LoggerFactory.getLogger(CardResourceApi.class);
-    private BankService bankService;
+    private final BankService bankService;
 
     public CardResourceApi(BankService bankService) {
         this.bankService = bankService;
