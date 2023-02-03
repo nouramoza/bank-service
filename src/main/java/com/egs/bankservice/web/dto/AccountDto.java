@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -24,6 +25,10 @@ public class AccountDto implements Serializable {
 
     @NonNull
     private Long balance;
+
+    protected LocalDateTime openDate;
+
+    protected LocalDateTime closeDate;
 
     private Boolean isActive;
 

@@ -6,9 +6,10 @@ import com.egs.bankservice.web.dto.CardDto;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface CardService {
-    BankRestResponse addCard(CardDto cardDto);
-
+public interface BasicInfoService {
     BankRestResponse addAccount(AccountDto accountDto);
+
+    BankRestResponse addCard(CardDto cardDto);
+    BankRestResponse activeCard(String cardNumber);
 
 }

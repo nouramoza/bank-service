@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -20,6 +21,7 @@ public class CardDto implements Serializable {
     private int cvv2;
     @Setter
     private Date expireDate;
+    private LocalDateTime issueDate;
     private String pin;
     @Setter
     private Boolean isActive;
