@@ -35,30 +35,40 @@ public class BankServiceImpl implements BankService {
         BankRestResponse<CardDto> restResponse;
         try {
             CardEntity cardEntity = cardRepository.findByCardNumber(cardDto.getCardNumber());
-            if (cardEntity != null) {
-                CardDto resultCardDto = ObjectMapperUtils.map(cardEntity, CardDto.class);
-                if (Boolean.TRUE.equals(cardEntity.getIsActive()) && !cardEntity.getExpireDate().before(new Date())) {
-                    httpSession.setAttribute(VERIFICATION_KEY, cardDto);
-                    restResponse = new BankRestResponse<>(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.ResponseMessage.CARD_ACCEPTED,
-                            resultCardDto);
-                } else {
-                    if (Boolean.FALSE.equals(cardEntity.getIsActive())) {
-                        if (cardEntity.getIncorrectPinCount() >= ConstantsUtil.CommonValues.WRONG_PIN_COUNTS_TO_BLOCK) {
-                            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_IS_BLOCKED_MSG, resultCardDto);
-                        } else {
-                            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_NOT_ACTIVE_MSG, resultCardDto);
-                        }
-                    } else if (cardEntity.getExpireDate().before(new Date())) {
-                        restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_EXPIRED_MSG, resultCardDto);
-                    } else {
-                        restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_MSG, resultCardDto);
-                    }
-                }
-            } else {
-                restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_NOT_FOUND_MSG, cardDto);
-            }
+            restResponse = cardEntity != null ?
+                    generateResponse(cardEntity) :
+                    new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_NOT_FOUND_MSG, cardDto);
         } catch (Exception e) {
             restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, Arrays.toString(e.getStackTrace()), cardDto);
+        }
+        return restResponse;
+    }
+
+    private BankRestResponse<CardDto> generateResponse(CardEntity cardEntity) {
+        BankRestResponse<CardDto> restResponse;
+        CardDto resultCardDto = ObjectMapperUtils.map(cardEntity, CardDto.class);
+        if (Boolean.TRUE.equals(cardEntity.getIsActive()) && !cardEntity.getExpireDate().before(new Date())) {
+            httpSession.setAttribute(VERIFICATION_KEY, resultCardDto);
+            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.ResponseMessage.CARD_ACCEPTED,
+                    resultCardDto);
+        } else {
+            restResponse = generateResponseForInactiveCard(cardEntity, resultCardDto);
+        }
+        return restResponse;
+    }
+
+    private BankRestResponse<CardDto> generateResponseForInactiveCard(CardEntity cardEntity, CardDto resultCardDto) {
+        BankRestResponse<CardDto> restResponse;
+        if (Boolean.FALSE.equals(cardEntity.getIsActive())) {
+            if (cardEntity.getIncorrectPinCount() >= ConstantsUtil.CommonValues.WRONG_PIN_COUNTS_TO_BLOCK) {
+                restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_IS_BLOCKED_MSG, resultCardDto);
+            } else {
+                restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_NOT_ACTIVE_MSG, resultCardDto);
+            }
+        } else if (cardEntity.getExpireDate().before(new Date())) {
+            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_EXPIRED_MSG, resultCardDto);
+        } else {
+            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_MSG, resultCardDto);
         }
         return restResponse;
     }
