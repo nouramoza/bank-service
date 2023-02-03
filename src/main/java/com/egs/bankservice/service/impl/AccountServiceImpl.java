@@ -40,7 +40,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public BankRestResponse requestManagement(AccountRequestDto accountRequestDto) {
-        BankRestResponse restResponse = null;
+        BankRestResponse restResponse = new BankRestResponse();
         CardEntity cardEntity = cardRepository.findByCardNumber(accountRequestDto.getCardNumber());
         AccountEntity accountEntity = cardEntity.getAccountEntity();
         TransactionLogEntity transactionLogEntity = new TransactionLogEntity();
@@ -71,7 +71,10 @@ public class AccountServiceImpl implements AccountService {
         }
 
         transactionLogEntity.setNewBalance(accountEntity.getBalance());
-        transactionLogEntity.setResponse(restResponse.getMessage().length() > 255 ? restResponse.getMessage().substring(0,255) :  restResponse.getMessage());
+        String message = restResponse.getMessage();
+        if (!message.isEmpty()) {
+            transactionLogEntity.setResponse(message.length() > 255 ? message.substring(0, 255) : message);
+        }
         transactionLogEntity.setStatus(restResponse.getStatus());
         transactionLogRepository.saveAndFlush(transactionLogEntity);
         return restResponse;
@@ -116,12 +119,13 @@ public class AccountServiceImpl implements AccountService {
             List<TransactionLogEntity> transactionLogList = transactionLogRepository.getReceipt(
                     accountEntity.getAccountNumber(), accountRequestDto.getFromDate(), accountRequestDto.getToDate(), requestTypeEnums);
 
+            AccountDto accountDto = ObjectMapperUtils.map(accountEntity, AccountDto.class);
             final String[] logResult = {""};
             transactionLogList
                     .forEach(tl -> logResult[0] = logResult[0].concat(tl.getRequestDate() + " - " + tl.getRequestTypeEnum() + " - " + tl.getNewBalance() +
                             " - " + tl.getDescription() + "////"));
             restResponse = new BankRestResponse(BankRestResponse.STATUS.SUCCESS,
-                    ConstantsUtil.CommonMessage.SUCCESS_RECEIPT.concat(logResult[0]));
+                    ConstantsUtil.CommonMessage.SUCCESS_RECEIPT.concat(logResult[0]), accountDto);
         } catch (Exception e) {
             restResponse = new BankRestResponse(BankRestResponse.STATUS.FAILURE, Arrays.toString(e.getStackTrace()));
         }

@@ -1,5 +1,6 @@
 package com.egs.bankservice.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AccountDto implements Serializable {
     private List<CardDto> cardDtoList;
 
