@@ -23,24 +23,28 @@ public class CardHelper {
     private static final String PIN = "1234";
     public static CardDto addValidCard(MockMvc mockMvc, AccountDto accountDto, String cardNumber) throws Exception {
         CardDto cardDto = new CardDto(cardNumber, CVV, generateDate("2024-01-01","yyyy-MM-dd"),
+                generateDate("2021-01-01","yyyy-MM-dd"),
                 PIN, true, 0, accountDto);
         return performCardInsertion(mockMvc, cardDto);
     }
 
     public static CardDto addExpiredCard(MockMvc mockMvc,AccountDto accountDto, String cardNumber) throws Exception {
         CardDto cardDto = new CardDto(cardNumber, CVV, generateDate("2023-01-01","yyyy-MM-dd"),
+                generateDate("2021-01-01","yyyy-MM-dd"),
                 PIN, true, 0, accountDto);
         return performCardInsertion(mockMvc, cardDto);
     }
 
     public static CardDto addInactiveCard(MockMvc mockMvc,AccountDto accountDto, String cardNumber) throws Exception {
         CardDto cardDto = new CardDto(cardNumber, CVV, generateDate("2024-01-01","yyyy-MM-dd"),
+                generateDate("2021-01-01","yyyy-MM-dd"),
                 PIN, false, 0, accountDto);
         return performCardInsertion(mockMvc, cardDto);
     }
 
     public static CardDto addBlockedCard(MockMvc mockMvc,AccountDto accountDto, String cardNumber) throws Exception {
         CardDto cardDto = new CardDto(cardNumber, CVV, generateDate("2024-01-01","yyyy-MM-dd"),
+                generateDate("2021-01-01","yyyy-MM-dd"),
                 PIN, false, 3, accountDto);
         return performCardInsertion(mockMvc, cardDto);
     }

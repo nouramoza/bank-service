@@ -82,27 +82,25 @@ public class AccountServiceImpl implements AccountService {
 
     private BankRestResponse checkBalance(AccountEntity accountEntity) {
         AccountDto accountDto = ObjectMapperUtils.map(accountEntity, AccountDto.class);
-        return new BankRestResponse(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.CommonMessage.YOUR_BALANCE + accountEntity.getBalance(),accountDto);
+        return new BankRestResponse(BankRestResponse.STATUS.SUCCESS, ConstantsUtil.CommonMessage.YOUR_BALANCE + accountEntity.getBalance(), accountDto);
     }
 
     private BankRestResponse updateBalance(AccountRequestDto accountRequestDto, AccountEntity accountEntity) {
         BankRestResponse<AccountDto> restResponse;
 
-        synchronized (accountEntity) {
-            if (accountEntity.getBalance() + accountRequestDto.getAmount() >= 0) {
-                accountEntity.setBalance(accountEntity.getBalance() + accountRequestDto.getAmount());
-                accountRepository.saveAndFlush(accountEntity);
-                AccountDto accountDto = ObjectMapperUtils.map(accountEntity, AccountDto.class);
-                restResponse = new BankRestResponse<>(BankRestResponse.STATUS.SUCCESS,
-                        (accountRequestDto.getAmount() > 0 ?
-                                ConstantsUtil.CommonMessage.SUCCESS_DEPOSIT :
-                                ConstantsUtil.CommonMessage.SUCCESS_WITHDRAW) +
-                                accountEntity.getBalance(), accountDto);
+        if (accountEntity.getBalance() + accountRequestDto.getAmount() >= 0) {
+            accountEntity.setBalance(accountEntity.getBalance() + accountRequestDto.getAmount());
+            accountRepository.saveAndFlush(accountEntity);
+            AccountDto accountDto = ObjectMapperUtils.map(accountEntity, AccountDto.class);
+            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.SUCCESS,
+                    (accountRequestDto.getAmount() > 0 ?
+                            ConstantsUtil.CommonMessage.SUCCESS_DEPOSIT :
+                            ConstantsUtil.CommonMessage.SUCCESS_WITHDRAW) +
+                            accountEntity.getBalance(), accountDto);
 
-            } else {
-                AccountDto accountDto = ObjectMapperUtils.map(accountEntity, AccountDto.class);
-                restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.AccountMessage.NOT_ENOUGH_BALANCE_MSG, accountDto);
-            }
+        } else {
+            AccountDto accountDto = ObjectMapperUtils.map(accountEntity, AccountDto.class);
+            restResponse = new BankRestResponse<>(BankRestResponse.STATUS.FAILURE, ErrorConstants.AccountMessage.NOT_ENOUGH_BALANCE_MSG, accountDto);
         }
         return restResponse;
     }

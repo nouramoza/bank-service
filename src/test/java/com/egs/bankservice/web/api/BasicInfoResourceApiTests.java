@@ -1,6 +1,5 @@
 package com.egs.bankservice.web.api;
 
-import com.egs.bankservice.util.ConstantsUtil;
 import com.egs.bankservice.web.dto.AccountDto;
 import com.egs.bankservice.web.dto.BankRestResponse;
 import com.egs.bankservice.web.dto.CardDto;
@@ -20,8 +19,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.util.Date;
 
 import static com.egs.bankservice.web.helper.CommonMethodHelper.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -122,10 +119,8 @@ class BasicInfoResourceApiTests {
 				.andReturn();
 		BankRestResponse bankRestResponse =new ObjectMapper().readValue(mvcResult.getResponse().getContentAsString(), BankRestResponse.class);
 		Assertions.assertEquals(0, bankRestResponse.getStatus());
-
-
-		LocalDate date = LocalDate.of(2024, 1,1);
 		CardDto cardDto = new CardDto(generateRandomCardNumber(), 123, generateDate("2024-01-01","yyyy-MM-dd"),
+				generateDefaultDate(),
 				"1234", true, 0, accountDto);
 
 		String cardStr = mapToJson(cardDto);

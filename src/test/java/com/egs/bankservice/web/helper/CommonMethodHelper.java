@@ -17,8 +17,10 @@ public class CommonMethodHelper {
 
     public static Date generateDate(String dateStr, String pattern) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat(pattern);
-        Date date = formatter.parse(dateStr);
-        return date;
+        return formatter.parse(dateStr);
+    }
+    public static Date generateDefaultDate() throws ParseException {
+        return generateDate("2020-01-01","yyyy-MM-dd");
     }
 
     public static String generateRandomAccountNumber() throws ParseException {

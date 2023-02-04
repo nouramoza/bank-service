@@ -6,26 +6,21 @@ import lombok.*;
 import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Getter
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CardDto implements Serializable {
     @NonNull
-    @Setter
     private String cardNumber;
-    @Setter
     private int cvv2;
-    @Setter
     private Date expireDate;
-    private LocalDateTime issueDate;
+    private Date issueDate;
     private String pin;
-    @Setter
     private Boolean isActive;
     private int incorrectPinCount;
     private AccountDto accountDto;
