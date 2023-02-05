@@ -55,7 +55,7 @@ INSERT INTO card(
 
 INSERT INTO card(
             id, card_number, cvv2, expire_date, is_active, pin, account_id, incorrect_pin_count, ISSUE_DATE)
-    VALUES (102, 628023145234765, 342, '2022-11-11', false, 1111, 102, 0, TIMESTAMP '2021-11-11 00:00:00.0');
+    VALUES (102, 628023145234765, 342, '2023-11-11', false, 1111, 102, 0, TIMESTAMP '2021-11-11 00:00:00.0');
 
 INSERT INTO card(
             id, card_number, cvv2, expire_date, is_active, pin, account_id, incorrect_pin_count, ISSUE_DATE)
@@ -63,4 +63,4 @@ INSERT INTO card(
 
 INSERT INTO card(
             id, card_number, cvv2, expire_date, is_active, pin, account_id, incorrect_pin_count, ISSUE_DATE)
-    VALUES (104, 6280231476123412, 239, '2022-11-11', true, 1233, 101, 0, TIMESTAMP '2020-11-11 00:00:00.0');
+    VALUES (104, 6280231476123412, 239, '2023-11-11', true, 1233, 101, 0, TIMESTAMP '2020-11-11 00:00:00.0');
